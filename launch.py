@@ -1,4 +1,6 @@
 from modules import launch_utils
+import ssl
+ssl._create_default_https_context = ssl._create_unverified_context
 
 args = launch_utils.args
 python = launch_utils.python
