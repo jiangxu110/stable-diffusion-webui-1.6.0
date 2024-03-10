@@ -493,18 +493,13 @@ def start():
         print('verify start1')
         # 接收服务端数据
         recv_data = client_socket.recv(1024)
-
+        print('verify start12')
         # 将接收到的数据解析成字符串
         recv_str = recv_data.decode('utf-8')
+        print('verify 13')
         
         # 判断服务端返回结果
         if recv_str == 'OK':
-            # print('verify start2')
-            # 匹配成功，继续运行
-            
-            # if '--nowebui' in sys.argv:
-            #     webui.api_only()
-            # else:
             start_webui = True
             print('match success')
         else:
