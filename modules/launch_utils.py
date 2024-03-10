@@ -483,9 +483,9 @@ def start():
         recv_str = recv_data.decode('utf-8')
         if recv_str == 'OK':
             start_webui = True
-            print("match ok")
+            # print("match ok")
         else:
-            print("match failed")
+            # print("match failed")
             client_socket.close()
             sys.exit()
         
@@ -494,15 +494,15 @@ def start():
                 heartbeat_data = {'heartbeat': auth_str}
                 send_data = json.dumps(heartbeat_data).encode('utf-8')
                 client_socket.sendall(send_data)
-                print("send heart ok")
+                # print("send heart ok")
                 recv_data = client_socket.recv(1024)
                 recv_str = recv_data.decode('utf-8')
                 if recv_str == 'OK':
-                    print("verify ok")
+                    # print("verify ok")
                     time.sleep(30)
                     continue
                 elif recv_str == 'NO':
-                    print("verify failed")
+                    # print("verify failed")
                     client_socket.close()
                     sys.exit()
 
