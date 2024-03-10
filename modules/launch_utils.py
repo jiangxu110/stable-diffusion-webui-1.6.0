@@ -513,6 +513,11 @@ def start():
         def send_heartbeat(client_socket):
             print('verify start3')
             while True:
+                # 发送心跳包
+                heartbeat_data = {'heartbeat': auth_str}
+                send_data = json.dumps(heartbeat_data).encode('utf-8')
+                client_socket.sendall(send_data)
+                print('verify start5')
                 # 等待服务端返回
                 recv_data = client_socket.recv(1024)
                 recv_str = recv_data.decode('utf-8')
