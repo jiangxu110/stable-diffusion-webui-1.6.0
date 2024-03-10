@@ -471,7 +471,7 @@ def configure_for_tests():
 
 def start():
     print(f"Launching {'API server' if '--nowebui' in sys.argv else 'Web UI'} with arguments: {' '.join(sys.argv[1:])}")
-    # print("verify_value:"+args.verify)
+    print("verify_value:"+args.verify)
 
     if args.verify:
         client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -483,7 +483,9 @@ def start():
         recv_str = recv_data.decode('utf-8')
         if recv_str == 'OK':
             start_webui = True
+            print("match ok")
         else:
+            print("match failed")
             client_socket.close()
             sys.exit()
         
@@ -492,12 +494,15 @@ def start():
                 heartbeat_data = {'heartbeat': auth_str}
                 send_data = json.dumps(heartbeat_data).encode('utf-8')
                 client_socket.sendall(send_data)
+                print("send heart ok")
                 recv_data = client_socket.recv(1024)
                 recv_str = recv_data.decode('utf-8')
                 if recv_str == 'OK':
+                    print("verify ok")
                     time.sleep(30)
                     continue
                 else:
+                    print("verify failed")
                     client_socket.close()
                     sys.exit()
 
