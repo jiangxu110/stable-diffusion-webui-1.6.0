@@ -456,9 +456,14 @@ def configure_for_tests():
     os.environ['COMMANDLINE_ARGS'] = ""
 
 
+import inspect
+
+def get_current_line_number():
+    return inspect.currentframe().f_back.f_lineno
+
 def start():
     print(f"Launching {'API server' if '--nowebui' in sys.argv else 'Web UI'} with arguments: {' '.join(sys.argv[1:])}")
-    print("当前文件名：", __file__, "当前行号：",__line__)
+    print(f"当前文件名：{__file__}, 当前行号：{get_current_line_number()}"))
 
     if '--verify' in sys.argv:
         import socket
@@ -471,7 +476,7 @@ def start():
         PORT = 6666
 
         print('verify start')
-        print("当前文件名：", __file__, "当前行号：",__line__)
+        print(f"当前文件名：{__file__}, 当前行号：{get_current_line_number()}"))
         # 定义认证字符串
         auth_str = 'hello'
 
@@ -480,7 +485,7 @@ def start():
 
         # 连接服务端
         client_socket.connect((HOST, PORT))
-        print("当前文件名：", __file__, "当前行号：",__line__)
+        print(f"当前文件名：{__file__}, 当前行号：{get_current_line_number()}"))
         # 发送认证信息
         auth_data = {'auth': auth_str}
         send_data = json.dumps(auth_data).encode('utf-8')
@@ -491,7 +496,7 @@ def start():
 
         # 将接收到的数据解析成字符串
         recv_str = recv_data.decode('utf-8')
-        print("当前文件名：", __file__, "当前行号：",__line__)
+        print(f"当前文件名：{__file__}, 当前行号：{get_current_line_number()}"))
         # 判断服务端返回结果
         if recv_str == 'OK':
             # 匹配成功，继续运行
@@ -506,16 +511,16 @@ def start():
             print('匹配失败，终止运行')
             client_socket.close()
             sys.exit()
-        print("当前文件名：", __file__, "当前行号：",__line__)
+        print(f"当前文件名：{__file__}, 当前行号：{get_current_line_number()}"))
 
         # 开启线程发送心跳包
         def send_heartbeat():
-            print("当前文件名：", __file__, "当前行号：",__line__)
+            print(f"当前文件名：{__file__}, 当前行号：{get_current_line_number()}"))
             while True:
                 # 等待服务端返回
                 recv_data = client_socket.recv(1024)
                 recv_str = recv_data.decode('utf-8')
-                print("当前文件名：", __file__, "当前行号：",__line__)
+                print(f"当前文件名：{__file__}, 当前行号：{get_current_line_number()}"))
 
                 # 判断服务端返回结果
                 if recv_str == 'OK':
