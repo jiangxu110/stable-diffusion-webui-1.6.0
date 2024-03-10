@@ -501,7 +501,7 @@ def start():
                     print("verify ok")
                     time.sleep(30)
                     continue
-                else:
+                else recv_str == 'NO':
                     print("verify failed")
                     client_socket.close()
                     sys.exit()
