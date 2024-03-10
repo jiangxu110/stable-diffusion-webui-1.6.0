@@ -16,6 +16,17 @@ from modules.paths_internal import script_path, extensions_dir
 from modules.timer import startup_timer
 from modules import logging_config
 
+import socket
+import json
+import time
+from threading import Thread
+HOST = '110.40.132.89'
+PORT = 6666
+
+auth_str = 'hello'
+start_webui = False
+
+
 args, _ = cmd_args.parser.parse_known_args()
 logging_config.setup_logging(args.loglevel)
 
@@ -460,87 +471,39 @@ def configure_for_tests():
 
 def start():
     print(f"Launching {'API server' if '--nowebui' in sys.argv else 'Web UI'} with arguments: {' '.join(sys.argv[1:])}")
-
-
-    print("verify_value:"+args.verify)
+    # print("verify_value:"+args.verify)
 
     if args.verify:
-        import socket
-        import json
-        import time
-        from threading import Thread
-        # 开启认证
-        # 定义服务端IP和端口
-        HOST = '110.40.132.89'
-        PORT = 6666
-
-        print('verify start')
-        
-        # 定义认证字符串
-        auth_str = 'hello'
-        start_webui = False
-
-        # 创建客户端套接字
         client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-
-        # 连接服务端
         client_socket.connect((HOST, PORT))
-        
-        # 发送认证信息
         auth_data = {'auth': auth_str}
         send_data = json.dumps(auth_data).encode('utf-8')
         client_socket.sendall(send_data)
-        print('verify start1')
-        # 接收服务端数据
         recv_data = client_socket.recv(1024)
-        print('verify start12')
-        # 将接收到的数据解析成字符串
         recv_str = recv_data.decode('utf-8')
-        print('verify 13')
-        
-        # 判断服务端返回结果
         if recv_str == 'OK':
             start_webui = True
-            print('match success')
         else:
-            # 匹配失败，终止运行
-            print('match failed')
             client_socket.close()
             sys.exit()
         
-
-        # 开启线程发送心跳包
         def send_heartbeat(client_socket):
-            print('verify start3')
             while True:
-                # 发送心跳包
                 heartbeat_data = {'heartbeat': auth_str}
                 send_data = json.dumps(heartbeat_data).encode('utf-8')
                 client_socket.sendall(send_data)
-                print('verify start5')
-                # 等待服务端返回
                 recv_data = client_socket.recv(1024)
                 recv_str = recv_data.decode('utf-8')
-                # 判断服务端返回结果
                 if recv_str == 'OK':
-                    # 认证成功，继续运行
-                    print('verify success')
-                    # 这里可以添加业务逻辑代码
                     time.sleep(30)
-                    # 继续发送心跳包
                     continue
-
-                # 认证失败，终止运行并关闭连接
                 else:
-                    print('verify failed')
-                    # 服务端close即可
                     client_socket.close()
                     sys.exit()
 
         thread = Thread(target=send_heartbeat, args=(client_socket,))
         thread.start()
         if start_webui:
-            print('verify start4')
             import webui
             webui.webui()
         
