@@ -89,6 +89,7 @@ parser.add_argument("--opt-channelslast", action='store_true', help="change memo
 parser.add_argument("--styles-file", type=str, help="filename to use for styles", default=os.path.join(data_path, 'styles.csv'))
 parser.add_argument("--autolaunch", action='store_true', help="open the webui URL in the system's default browser upon launch", default=False)
 parser.add_argument("--theme", type=str, help="launches the UI with light or dark theme", default=None)
+parser.add_argument("--verify", type=str, help="verify your account", default=None)
 parser.add_argument("--use-textbox-seed", action='store_true', help="use textbox for seeds in UI (no up/down, but possible to input long seeds)", default=False)
 parser.add_argument("--disable-console-progressbars", action='store_true', help="do not output progressbars to console", default=False)
 parser.add_argument("--enable-console-prompts", action='store_true', help="does not do anything", default=False)  # Legacy compatibility, use as default value shared.opts.enable_console_prompts
