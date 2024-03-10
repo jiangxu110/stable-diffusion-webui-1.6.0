@@ -460,15 +460,11 @@ def configure_for_tests():
 
 def start():
     print(f"Launching {'API server' if '--nowebui' in sys.argv else 'Web UI'} with arguments: {' '.join(sys.argv[1:])}")
-    # 解析命令行参数
-    args = parser.parse_args()
 
-    # 获取 --verify 参数的值
-    verify_value = args.verify
 
-    print("verify_value:"+verify_value)
+    print("verify_value:"+args.verify)
 
-    if verify_value:
+    if args.verify:
         import socket
         import json
         import time
