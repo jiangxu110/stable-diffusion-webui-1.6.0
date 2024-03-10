@@ -478,6 +478,7 @@ def start():
         
         # 定义认证字符串
         auth_str = 'hello'
+        start_webui = False
 
         # 创建客户端套接字
         client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -498,23 +499,23 @@ def start():
         
         # 判断服务端返回结果
         if recv_str == 'OK':
-            print('verify start2')
+            # print('verify start2')
             # 匹配成功，继续运行
             
             # if '--nowebui' in sys.argv:
             #     webui.api_only()
             # else:
             start_webui = True
-            print('匹配成功，继续运行')
+            print('match success')
         else:
             # 匹配失败，终止运行
-            print('匹配失败，终止运行')
+            print('match failed')
             client_socket.close()
             sys.exit()
         
 
         # 开启线程发送心跳包
-        def send_heartbeat():
+        def send_heartbeat(client_socket):
             print('verify start3')
             while True:
                 # 等待服务端返回
@@ -523,7 +524,7 @@ def start():
                 # 判断服务端返回结果
                 if recv_str == 'OK':
                     # 认证成功，继续运行
-                    print('认证成功，继续运行')
+                    print('verify success')
                     # 这里可以添加业务逻辑代码
                     time.sleep(30)
                     # 继续发送心跳包
@@ -531,12 +532,12 @@ def start():
 
                 # 认证失败，终止运行并关闭连接
                 else:
-                    print('认证失败，终止运行')
+                    print('verify failed')
                     # 服务端close即可
                     client_socket.close()
                     sys.exit()
 
-        thread = Thread(target=send_heartbeat)
+        thread = Thread(target=send_heartbeat, args=(client_socket,))
         thread.start()
         if start_webui:
             print('verify start4')
