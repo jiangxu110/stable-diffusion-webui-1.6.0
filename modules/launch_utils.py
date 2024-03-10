@@ -500,11 +500,11 @@ def start():
         if recv_str == 'OK':
             print('verify start2')
             # 匹配成功，继续运行
-            import webui
-            if '--nowebui' in sys.argv:
-                webui.api_only()
-            else:
-                webui.webui()
+            
+            # if '--nowebui' in sys.argv:
+            #     webui.api_only()
+            # else:
+            start_webui = True
             print('匹配成功，继续运行')
         else:
             # 匹配失败，终止运行
@@ -520,8 +520,6 @@ def start():
                 # 等待服务端返回
                 recv_data = client_socket.recv(1024)
                 recv_str = recv_data.decode('utf-8')
-                
-
                 # 判断服务端返回结果
                 if recv_str == 'OK':
                     # 认证成功，继续运行
@@ -540,6 +538,10 @@ def start():
 
         thread = Thread(target=send_heartbeat)
         thread.start()
+        if start_webui:
+            print('verify start4')
+            import webui
+            webui.webui()
         
 
 def dump_sysinfo():
