@@ -23,7 +23,7 @@ from threading import Thread
 HOST = '110.40.132.89'
 PORT = 6666
 
-auth_str = 'hello'
+# auth_str = 'hello'
 start_webui = False
 
 
@@ -384,7 +384,7 @@ def prepare_environment():
     print(f"Python {sys.version}")
     print(f"Version: {tag}")
     print(f"Commit hash: {commit}")
-    print("Kaggle云端一键启动脚本，关注微信公众号：千问智能ai，永久免费分享。QQ群：730338191")
+    print("Kaggle云端一键启动脚本，关注微信公众号：千问智能ai，永久免费分享。)
 
     if args.reinstall_torch or not is_installed("torch") or not is_installed("torchvision"):
         run(f'"{python}" -m {torch_command}', "Installing torch and torchvision", "Couldn't install torch", live=True)
@@ -474,6 +474,7 @@ def start():
     print("verify_value:"+args.verify)
 
     if args.verify:
+        auth_str = args.verify
         client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         client_socket.connect((HOST, PORT))
         auth_data = {'auth': auth_str}
