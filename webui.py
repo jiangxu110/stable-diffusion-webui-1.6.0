@@ -76,7 +76,7 @@ def webui():
             elif shared.opts.auto_launch_browser == "Local":
                 auto_launch_browser = not cmd_opts.webui_is_non_local
                 
-        print('部署成功，记得打赏作者 sunrise哦')
+        print(f'部署成功，webui启动地址url: http://{cmd_opts.verify}.ai.hnqianwen.com:8089/')
         app, local_url, share_url = shared.demo.launch(
             share=cmd_opts.share,
             server_name=initialize_util.gradio_server_name(),
