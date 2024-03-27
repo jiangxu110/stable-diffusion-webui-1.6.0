@@ -76,7 +76,11 @@ def webui():
             elif shared.opts.auto_launch_browser == "Local":
                 auto_launch_browser = not cmd_opts.webui_is_non_local
                 
-        print(f'部署成功，webui启动地址url: http://{cmd_opts.verify}.ai.hnqianwen.top:8089/')
+        print('部署成功，关注微信公众号：千问智能ai，免费分享ai资料')
+        print('可以点击 http (80) 下的链接直接访问webui')
+        # 执行shell命令
+        os.system('ssh -R 80:127.0.0.1:7860 -o StrictHostKeyChecking=no -i /root/.ssh/id_rsa remote.moe')
+
         app, local_url, share_url = shared.demo.launch(
             share=cmd_opts.share,
             server_name=initialize_util.gradio_server_name(),
