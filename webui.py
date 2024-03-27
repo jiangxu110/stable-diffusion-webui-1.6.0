@@ -79,7 +79,7 @@ def webui():
         print('部署成功，关注微信公众号：千问智能ai，免费分享ai资料')
         print('可以点击 http (80) 下的链接直接访问webui')
         # 执行shell命令
-        os.system('ssh -R 80:127.0.0.1:7860 -o StrictHostKeyChecking=no -i /root/.ssh/id_rsa remote.moe')
+        os.system('ssh -R 80:127.0.0.1:7860 -o StrictHostKeyChecking=no -i /root/.ssh/id_rsa remote.moe &')
 
         app, local_url, share_url = shared.demo.launch(
             share=cmd_opts.share,
