@@ -466,7 +466,14 @@ def configure_for_tests():
 
     os.environ['COMMANDLINE_ARGS'] = ""
 
-
+def kill_webui():
+    import os
+    # 获取当前进程的PID
+    pid = os.getpid()
+    # 构建杀掉自己进程的命令
+    kill_command = f"kill {pid}"
+    # 执行命令
+    os.system(kill_command)
 
 
 def start():
@@ -488,24 +495,27 @@ def start():
         else:
             # print("match failed")
             client_socket.close()
-            sys.exit()
+            kill_webui()
         
         def send_heartbeat(client_socket):
             while True:
-                heartbeat_data = {'heartbeat': auth_str}
-                send_data = json.dumps(heartbeat_data).encode('utf-8')
-                client_socket.sendall(send_data)
+                # heartbeat_data = {'heartbeat': auth_str}
+                # send_data = json.dumps(heartbeat_data).encode('utf-8')
+                # client_socket.sendall(send_data)
                 # print("send heart ok")
                 recv_data = client_socket.recv(1024)
                 recv_str = recv_data.decode('utf-8')
                 if recv_str == 'OK':
                     # print("verify ok")
-                    time.sleep(30)
+                    heartbeat_data = {'heartbeat': auth_str}
+                    send_data = json.dumps(heartbeat_data).encode('utf-8')
+                    client_socket.sendall(send_data)
+                    # time.sleep(30)
                     continue
                 elif recv_str == 'NO':
                     # print("verify failed")
                     client_socket.close()
-                    sys.exit()
+                    kill_webui()
 
         thread = Thread(target=send_heartbeat, args=(client_socket,))
         thread.start()
